@@ -22,15 +22,17 @@ describe('bin/license-checker', function() {
         var excludedPackages = [
             'readable-stream@1.1.14',
             'spdx-satisfies@4.0.0',
-            'y18n@3.2.1',
+            'y18n',
         ];
         var output = spawn('node', [path.join(__dirname, '../bin/license-checker'), '--json', '--excludePackages', excludedPackages.join(';')], {
             cwd: path.join(__dirname, '../'),
         });
-        
         var packages = Object.keys(JSON.parse(output.stdout.toString()));
         excludedPackages.forEach(function(pkg) {
             assert.ok(!packages.includes(pkg));
+        });
+        packages.forEach(function(pkg) {
+            assert.ok(!pkg.startsWith('y18n'));
         });
     });
 
